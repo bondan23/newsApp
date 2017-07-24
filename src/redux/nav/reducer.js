@@ -9,12 +9,9 @@ const tempNavState = AppNavigator.router.getStateForAction(firstAction);
 
 const secondAction = AppNavigator.router.getActionForPathAndParams('Login');
 
-const initialNavState = AppNavigator.router.getStateForAction(
-  secondAction,
-  tempNavState
+export const initialNavState = AppNavigator.router.getStateForAction(
+  firstAction
 );
-
-console.log(initialNavState);
 
 export default function navReducers(state = initialNavState, action) {
   let nextState;

@@ -1,14 +1,15 @@
 import React from 'react';
-import { Image,Platform,StyleSheet } from 'react-native';
+import { Image,Platform,StyleSheet,Text } from 'react-native';
 import Logo from '@images/qareer-logo.png';
-
-const TitleLogo = ()=>{
-  return(
-    <Image source={Logo} resizeMode={'contain'} style={styles.logo} />
-  )
-}
+{/*<Image source={Logo} resizeMode={'contain'} style={styles.logo} />*/}
 
 const styles = StyleSheet.create({
+  title:{
+    color:'#fff',
+    fontSize:18,
+    fontWeight:'bold',
+    marginLeft: (Platform.OS === 'ios') ? 0 : 5
+  },
   logo:{
     height:36,
     width:84,
@@ -19,5 +20,14 @@ const styles = StyleSheet.create({
     })
   }
 })
+
+const TitleLogo = ({title})=>{
+  return(
+    <Text style={styles.title}>
+      {title}
+    </Text>
+  )
+}
+
 
 export default TitleLogo;

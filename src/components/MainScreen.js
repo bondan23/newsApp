@@ -1,9 +1,7 @@
 import React,{Component} from 'react';
-import { StyleSheet, View, StatusBar } from 'react-native';
+import { StyleSheet, View, StatusBar, Text } from 'react-native';
 import { connect } from 'react-redux';
-
-import LoginStatusMessage from './LoginStatusMessage';
-import AuthButton from './AuthButton';
+import API,{ Fetcher } from '@libs/api';
 
 const styles = StyleSheet.create({
   container: {
@@ -15,16 +13,11 @@ const styles = StyleSheet.create({
 });
 
 class MainScreen extends Component{
-  componentDidMount() {
-    console.log('mounted')
-  }
-
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
-  }
-
-  componentWillUnmount() {
-    console.log('unmounted')
+  componentWillMount() {
+    const req = Fetcher('newsapi.articles.get').param({params:{'source':'the-next-web','sortBy':'latest'}})
+    req.then((res)=>{
+      console.log(res)
+    })
   }
 
   render(){
@@ -34,8 +27,9 @@ class MainScreen extends Component{
           backgroundColor="#00819D"
           barStyle="light-content"
         />
-        <LoginStatusMessage />
-        <AuthButton />
+        <Text>
+          Hello World
+        </Text>
       </View>
     )
   }

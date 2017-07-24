@@ -2,47 +2,17 @@ import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
 import { Platform, BackHandler } from 'react-native';
 import { connect } from 'react-redux';
-import { NavigationActions, addNavigationHelpers, StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
+import { NavigationActions, addNavigationHelpers, StackNavigator } from 'react-navigation';
 
 import LoginScreen from '@components/LoginScreen';
-import MainScreen from '@components/MainScreen';
+import MainScreen from '@containers/main/MainContainer';
+import ArticleScreen from '@containers/article/ArticleContainer';
 import ProfileScreen from '@components/ProfileScreen';
+import WebView from '@components/WebView';
 import TestScreen from '@components/TestScreen';
 import DeepScreen from '@components/DeepScreen';
 import TitleLogo from '@components/TitleLogo';
 
-export const Tabs = TabNavigator({
-  Home: {
-    screen: MainScreen,
-    navigationOptions: {
-        tabBarLabel: 'Home',
-        headerTitle:<TitleLogo />,
-    }
-  },
-  Profile: {
-    screen: ProfileScreen,
-    navigationOptions:{
-        tabBarLabel: 'Profile',
-        headerTitle:<TitleLogo />,
-    }
-  }
-},{
-    tabBarComponent: ({jumpToIndex, ...props, navigation}) => (
-        <TabBarBottom
-            {...props}
-            jumpToIndex={index => {
-                //const key = navigation.state.routes[navigation.state.index].key;
-                //navigation.dispatch(NavigationActions.setParams({key,params:{goToTop:true}}))
-                jumpToIndex(index)
-            }}
-        />
-
-    ),
-    tabBarPosition: 'bottom',
-    swipeEnabled: false,
-    animationEnabled: false,
-    backBehavior: 'none'
-});
 
 export const AppNavigator = StackNavigator({
   Login: {
@@ -51,21 +21,22 @@ export const AppNavigator = StackNavigator({
   Main: {
     screen: MainScreen,
     navigationOptions:{
-      headerTitle:<TitleLogo />,
+      headerTitle:<TitleLogo title={'News App'}/>,
     }
   },
-  Profile: {
-    screen: ProfileScreen,
+  WebView: {
+    screen: WebView
+  },
+  Article: {
+    screen: ArticleScreen,
     navigationOptions:{
-      headerTitle:<TitleLogo />,
+      headerTitle:<TitleLogo title="Article" />,
     }
-  },
-  Test: { screen: TestScreen },
-  Deep: { screen: DeepScreen },
-  Tabs : {
-    screen : Tabs
   }
 },{
+  cardStyle:{
+    backgroundColor:'#FFF'
+  },
   navigationOptions:{
     headerBackTitle:null,
     headerTintColor:'white',
@@ -76,19 +47,33 @@ export const AppNavigator = StackNavigator({
   transitionConfig: () => ({
       screenInterpolator: sceneProps => {
           const { layout, position, scene } = sceneProps;
-          const { index } = scene;
+          const { index, route : { routeName } } = scene;
 
-          const translateX = position.interpolate({
-              inputRange: [index - 1, index, index + 1],
-              outputRange: [layout.initWidth, 0, 0]
-          });
+          if(routeName === 'WebView'){
+            const opacity = position.interpolate({
+                inputRange: [index-1, index, index+0.999, index+1],
+                outputRange: [ 0, 1, 1, 0],
+            });
 
-          const opacity = position.interpolate({
-              inputRange: [index - 1, index - 0.99, index, index + 0.99, index + 1],
-              outputRange: [0, 1, 1, 0.3, 0]
-          });
+            const translateY = position.interpolate({
+                inputRange: [index-1, index, index+1],
+                outputRange: [150, 0, 0],
+            })
 
-          return { opacity, transform: [{ translateX }] }
+            return { opacity, transform: [{ translateY }] }
+          }else{
+            const translateX = position.interpolate({
+                inputRange: [index - 1, index, index + 1],
+                outputRange: [layout.initWidth, 0, 0]
+            });
+
+            const opacity = position.interpolate({
+                inputRange: [index - 1, index - 0.99, index, index + 0.99, index + 1],
+                outputRange: [0, 1, 1, 0.3, 0]
+            });
+
+            return { opacity, transform: [{ translateX }] }
+          }
       }
   })
 });

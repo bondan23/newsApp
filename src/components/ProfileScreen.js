@@ -25,6 +25,8 @@ const ProfileScreen = () => (
 
 ProfileScreen.navigationOptions = {
   title: 'Profile',
+  header:null,
+  mode:'modal'
 };
 
 export default ProfileScreen;

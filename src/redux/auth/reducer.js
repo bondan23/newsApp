@@ -1,4 +1,4 @@
-const initialAuthState = { isLoggedIn: false };
+export const initialAuthState = { isLoggedIn: false };
 
 export default function authReducers(state = initialAuthState, action) {
   switch (action.type) {

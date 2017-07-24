@@ -7,11 +7,14 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import { NavigationActions } from 'react-navigation';
 
 import AppReducer from '@redux/';
 import AppWithNavigationState from '@navigators/AppNavigator';
+import { initialNavState } from '@redux/nav/reducer';
+import { initialAuthState } from '@redux/auth/reducer';
 
 const getCurrentRouteName = (navigationState) => {
   if (!navigationState) {
@@ -42,10 +45,24 @@ const screenTracking = ({ getState }) => next => (action) => {
   return result;
 };
 
+const initialState = {
+  nav:initialNavState,
+  auth:initialAuthState,
+  news:{
+    sources:{},
+    articles:{}
+  }
+}
 
-const enchancer = applyMiddleware(screenTracking,logger);
+const midlleware = [
+  thunk,
+  logger,
+  screenTracking
+]
 
-const store = createStore(AppReducer,{},enchancer);
+const enchancer = applyMiddleware(...midlleware);
+
+const store = createStore(AppReducer,initialState,enchancer);
 
 export default class App extends Component {
   render() {
