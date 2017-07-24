@@ -6,12 +6,16 @@
 		"start": "node node_modules/react-native/local-cli/cli.js start",
 		"test": "jest"
 	},
+	"author": "Bondan Eko Prasetyo",
+  "license": "MIT",
 	"dependencies": {
 		"axios": "^0.16.2",
 		"lodash": "^4.17.4",
 		"prop-types": "^15.5.10",
 		"react": "16.0.0-alpha.12",
 		"react-native": "0.46.4",
+		"react-native-elements": "^0.15.0",
+		"react-native-vector-icons": "^4.2.0",
 		"react-navigation": "^1.0.0-beta.11",
 		"react-redux": "^5.0.5",
 		"redux": "^3.7.2",

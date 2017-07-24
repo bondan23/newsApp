@@ -32,7 +32,7 @@ export default function newsReducer(state={},action){
           sources:{
             ...action.payload,
             sources:[
-              ...state.sources,
+              ...state.sources.sources,
               ..._.slice(action.payload.sources,offset,limit*action.page)
             ],
             page:action.page,

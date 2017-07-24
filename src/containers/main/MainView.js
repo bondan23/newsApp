@@ -31,7 +31,8 @@ class MainView extends Component{
 
     this.state = {
       loading:true,
-      loadingMore:true
+      loadingMore:true,
+      refreshing:false
     }
 
     this.uri = []
@@ -57,12 +58,21 @@ class MainView extends Component{
           limit++;
           if(limit === this.data.length){
             this.setState({
-              loading:false
+              loading:false,
+              refreshing:false
             })
           }
         })
       })
     }
+  }
+
+  _onRefresh(){
+    this.setState({
+      refreshing:true
+    })
+
+    this.props.getNewsSource()
   }
 
   _onPressRow(id,sortBy){
@@ -196,6 +206,8 @@ class MainView extends Component{
             keyExtractor={(item, index) => index}
             ListFooterComponent={this._loadingFooter.bind(this)}
             onScroll={this._onScroll.bind(this)}
+            onRefresh={this._onRefresh.bind(this)}
+            refreshing={this.state.refreshing}
           />
         </View>
       </View>
